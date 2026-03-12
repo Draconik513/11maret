@@ -2,21 +2,18 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Confetti from 'react-confetti';
 import useWindowSize from 'react-use/lib/useWindowSize';
-import happybirthday from '../assets/audio/happybirthday.mp3';
 
 const CakeCelebration = () => {
   const { width, height } = useWindowSize();
   const [isExtinguished, setIsExtinguished] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
-  const [userInteracted, setUserInteracted] = useState(false);
   const flameRef = useRef(null);
   const fireParticlesRef = useRef(null);
   const smokePuffRef = useRef(null);
   const audioContextRef = useRef(null);
   const analyserRef = useRef(null);
   const micSourceRef = useRef(null);
-  const birthdaySongRef = useRef(null);
   const particleIntervalRef = useRef(null);
   const blowDetectedTimerRef = useRef(null);
   const containerRef = useRef(null);
@@ -26,37 +23,6 @@ const CakeCelebration = () => {
     // Detect iOS device
     setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent) || 
              (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
-
-    // Initialize audio
-    birthdaySongRef.current = new Audio(happybirthday);
-    birthdaySongRef.current.preload = 'auto';
-    birthdaySongRef.current.load();
-
-    // iOS requires user interaction to play audio
-    const handleFirstInteraction = () => {
-      setUserInteracted(true);
-      // Try to play audio silently to unlock audio context
-      birthdaySongRef.current.volume = 0;
-      birthdaySongRef.current.play().then(() => {
-        birthdaySongRef.current.pause();
-        birthdaySongRef.current.currentTime = 0;
-        birthdaySongRef.current.volume = 1;
-      }).catch(e => console.log("Audio warmup failed:", e));
-      
-      // Remove event listeners after first interaction
-      document.removeEventListener('touchstart', handleFirstInteraction);
-      document.removeEventListener('click', handleFirstInteraction);
-      if (containerRef.current) {
-        containerRef.current.removeEventListener('touchstart', handleFirstInteraction);
-      }
-    };
-
-    // Add event listeners for first interaction
-    document.addEventListener('touchstart', handleFirstInteraction, { once: true });
-    document.addEventListener('click', handleFirstInteraction, { once: true });
-    if (containerRef.current) {
-      containerRef.current.addEventListener('touchstart', handleFirstInteraction, { once: true });
-    }
 
     // Initialize microphone
     initMic();
@@ -70,11 +36,6 @@ const CakeCelebration = () => {
       if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
         audioContextRef.current.close();
       }
-      document.removeEventListener('touchstart', handleFirstInteraction);
-      document.removeEventListener('click', handleFirstInteraction);
-      if (containerRef.current) {
-        containerRef.current.removeEventListener('touchstart', handleFirstInteraction);
-      }
     };
   }, []);
 
@@ -84,14 +45,6 @@ const CakeCelebration = () => {
       detectBlow(stream);
     } catch (err) {
       console.error("Error accessing microphone:", err);
-      // Fallback for iOS if microphone access is denied
-      if (isIOS) {
-        const handleInteraction = () => {
-          setUserInteracted(true);
-          document.removeEventListener('touchstart', handleInteraction);
-        };
-        document.addEventListener('touchstart', handleInteraction, { once: true });
-      }
     }
   };
 
@@ -182,52 +135,6 @@ const CakeCelebration = () => {
       setShowConfetti(true);
     }, 500);
 
-    // Play birthday song with iOS handling
-    const playBirthdaySong = () => {
-      if (!birthdaySongRef.current) return;
-      
-      birthdaySongRef.current.play()
-        .then(() => console.log("Birthday song playing"))
-        .catch(error => {
-          console.warn("Audio play failed:", error);
-          if (isIOS) {
-            // Show iOS-specific instructions
-            const playButton = document.createElement('button');
-            playButton.textContent = 'Tap to Play Music';
-            playButton.style.position = 'fixed';
-            playButton.style.bottom = '20px';
-            playButton.style.left = '50%';
-            playButton.style.transform = 'translateX(-50%)';
-            playButton.style.padding = '10px 20px';
-            playButton.style.backgroundColor = '#ec4899';
-            playButton.style.color = 'white';
-            playButton.style.borderRadius = '9999px';
-            playButton.style.zIndex = '1000';
-            playButton.style.border = 'none';
-            playButton.style.fontWeight = 'bold';
-            playButton.onclick = () => {
-              birthdaySongRef.current.play();
-              playButton.remove();
-            };
-            document.body.appendChild(playButton);
-          }
-        });
-    };
-
-    if (userInteracted || !isIOS) {
-      playBirthdaySong();
-    } else {
-      // Wait for user interaction on iOS
-      const handleInteraction = () => {
-        setUserInteracted(true);
-        playBirthdaySong();
-        document.removeEventListener('touchstart', handleInteraction);
-        document.removeEventListener('click', handleInteraction);
-      };
-      document.addEventListener('touchstart', handleInteraction, { once: true });
-      document.addEventListener('click', handleInteraction, { once: true });
-    }
-
     if (smokePuffRef.current) {
       smokePuffRef.current.style.opacity = 1;
       smokePuffRef.current.style.animation = 'smoke-rise 1s forwards ease-out';
@@ -301,16 +208,6 @@ const CakeCelebration = () => {
         >
           Hore! Lilinnya padam! Selamat Ulang Tahun Mas!
         </motion.div>
-
-        {!userInteracted && isIOS && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-pink-200 bg-pink-800/50 p-4 rounded-lg mb-4"
-          >
-            Tap anywhere to enable audio
-          </motion.div>
-        )}
       </motion.div>
 
       <style jsx global>{`
