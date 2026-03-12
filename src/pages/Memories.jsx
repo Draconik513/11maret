@@ -70,8 +70,10 @@ const Memories = ({ isIOS }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1.8 }}
             >
-              stay safe, stay healthy, kalo bisa stay with me juga xixi
-              terimakasih juga udah mau luangin waktu mas buat baca ini ✨
+              stay safe, stay healthy, kalo bisa stay with me juga xixi, kalo
+              dimaafkan alhamdulillaah terimakasih, kalo pun engga ya gapapa,
+              neng cuma mau ngasih ucapan sama doa aja buat mas terimakasih juga
+              udah mau luangin waktu mas buat baca ini ✨
             </motion.p>
           </div>
         </motion.div>
