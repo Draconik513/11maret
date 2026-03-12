@@ -132,7 +132,7 @@ const GiftWrapper = () => {
               Hadiah belum bisa dibuka sampai 11 Maret 2026 !
             </p>
             <p className="text-sm text-gray-500 mt-2">
-              Tunggu sampai hari ulang tahun tiba ❤️
+              Tunggu sampai hari ulang tahun tiba 🌹
             </p>
           </motion.div>
         )}

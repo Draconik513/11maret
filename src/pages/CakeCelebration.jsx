@@ -299,7 +299,7 @@ const CakeCelebration = () => {
           transition={{ duration: 0.5 }}
           className="text-2xl text-cyan-300 font-bold mb-8 animate-glow"
         >
-          Hore! Lilinnya padam! Selamat Ulang Tahun Sayang!
+          Hore! Lilinnya padam! Selamat Ulang Tahun Mas!
         </motion.div>
 
         {!userInteracted && isIOS && (

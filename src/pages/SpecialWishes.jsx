@@ -84,7 +84,7 @@ dari neng, neng mu 🌹✨
                 animate={{ scale: [1, 1.1, 1], opacity: [0.9, 1, 0.9] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <div className="text-[12rem] select-none text-center">❤️</div>
+                <div className="text-[12rem] select-none text-center">🌹</div>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-3xl font-bold drop-shadow-lg">
                   Alkhoris 💖
                 </div>

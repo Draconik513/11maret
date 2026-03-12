@@ -19,7 +19,7 @@ const HomePage = ({ isIOS }) => {
           transition={{ delay: 0.5 }}
           className="mb-8"
         >
-          <p className="text-lg text-pink-600 pt-4">Untuk yang tersayang</p>
+          <p className="text-lg text-pink-600 pt-4">Untuk yang termas</p>
           <h1 className="text-4xl font-extrabold bg-gradient-to-r from-pink-600 via-pink-400 to-purple-500 text-transparent bg-clip-text drop-shadow-md">
             Alkhoris
           </h1>
@@ -58,7 +58,7 @@ const HomePage = ({ isIOS }) => {
           className="space-y-6"
         >
           <h2 className="text-3xl font-bold text-pink-600">
-            Selamat Ulang Tahun Sayang!
+            Selamat Ulang Tahun Mas!
           </h2>
           <p className="text-xl text-pink-600">🎉 11 Maret 2026 🎉</p>
 
